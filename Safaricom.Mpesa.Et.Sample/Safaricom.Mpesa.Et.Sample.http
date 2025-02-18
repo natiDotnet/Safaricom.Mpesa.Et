@@ -1,0 +1,6 @@
+@Safaricom.Mpesa.Et.Sample_HostAddress = http://localhost:5169
+
+GET {{Safaricom.Mpesa.Et.Sample_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
