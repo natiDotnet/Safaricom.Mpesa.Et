@@ -1,4 +1,5 @@
 
+using System.Text.Json.Serialization;
 using Safaricom.Mpesa.Et.Shared;
 
 namespace Safaricom.Mpesa.Et.Requests;
@@ -44,7 +45,12 @@ public class TransactionStatus
     /// 2 – Till Number
     /// 4 – Organization short code
     /// </summary>
+    [JsonIgnore]
     public IdentifierType IdentifierType { get; private set; }
+
+    [JsonInclude]
+    [JsonPropertyName("identifierType")]
+    private string IdentifierTypeString { get => this.IdentifierType.ToString(); }
 
     /// <summary>
     /// The path that stores information of time out transaction. https://ip or domain:port/path

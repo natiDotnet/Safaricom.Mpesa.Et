@@ -33,7 +33,7 @@ public class MpesaClient : IMpesaClient
                            .ConfigureAwait(false);
         if (!result.IsSuccessStatusCode)
         {
-            var error = await result.Content.ReadFromJsonAsync<AuthErrorResponse>(Helper.SnakeCase);
+            var error = await result.Content.ReadFromJsonAsync<AuthErrorResponse>();
             throw new MpesaAPIException(result.StatusCode, new MpesaErrorResponse { ErrorCode = error?.ResultCode, ErrorMessage = error?.ResultDesc });
         }
         return await result.Content.ReadFromJsonAsync<AuthResponse>(Helper.SnakeCase);
@@ -45,9 +45,9 @@ public class MpesaClient : IMpesaClient
                                  .ConfigureAwait(false);
         if (!result.IsSuccessStatusCode)
         {
-            var error = await result.Content.ReadFromJsonAsync<MpesaErrorResponse>(Helper.SnakeCase);
+            var error = await result.Content.ReadFromJsonAsync<MpesaErrorResponse>();
             throw new MpesaAPIException(result.StatusCode, error!);
         }
-        return await result.Content.ReadFromJsonAsync<MpesaResponse>(Helper.SnakeCase);
+        return await result.Content.ReadFromJsonAsync<MpesaResponse>();
     }
 }
