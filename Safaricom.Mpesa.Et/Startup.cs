@@ -26,8 +26,7 @@ public static class Startup
                     : "https://api.safaricom.et/";
                 config ??= sp.GetRequiredService<IOptions<MpesaConfig>>().Value;
                 client.BaseAddress = new Uri(baseUrl);
-			    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", config.BasicAuth);
-			
+			    
                 return new MpesaClient(config, client);
             });
         return services;
