@@ -26,28 +26,40 @@ public class MpesaClient : IMpesaClient
        : this(new MpesaConfig { ConsumerKey = consumerKey, ConsumerSecret = consumerSecret })
     { }
 
-    public async Task<AuthResponse?> AuthorizeAsync()
+    public async Task<MpesaResponse?> AccountBalanceAsymc(AccountBalance request, CancellationToken cancellationToken = default)
     {
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", config.BasicAuth);
-		var result = await client.GetAsync("v1/token/generate?grant_type=client_credentials")
-                           .ConfigureAwait(false);
-        if (!result.IsSuccessStatusCode)
-        {
-            var error = await result.Content.ReadFromJsonAsync<AuthErrorResponse>();
-            throw new MpesaAPIException(result.StatusCode, new MpesaErrorResponse { ErrorCode = error?.ResultCode, ErrorMessage = error?.ResultDesc });
-        }
-        return await result.Content.ReadFromJsonAsync<AuthResponse>(Helper.SnakeCase);
-    }
-
-    public async Task<MpesaResponse?> TransactionStatusAsync(TransactionStatus request)
-    {
-        var result = await client.PostAsJsonAsync("mpesa/transactionstatus/v1/query", request)
+        var result = await client.PostAsJsonAsync("mpesa/accountbalance/v2/query", request, Helper.PascalCase, cancellationToken)
                                  .ConfigureAwait(false);
         if (!result.IsSuccessStatusCode)
         {
-            var error = await result.Content.ReadFromJsonAsync<MpesaErrorResponse>();
+            var error = await result.Content.ReadFromJsonAsync<MpesaErrorResponse>(cancellationToken);
             throw new MpesaAPIException(result.StatusCode, error!);
         }
-        return await result.Content.ReadFromJsonAsync<MpesaResponse>();
+        return await result.Content.ReadFromJsonAsync<MpesaResponse>(Helper.PascalCase, cancellationToken);
+    }
+
+    public async Task<AuthResponse?> AuthorizeAsync(CancellationToken cancellationToken = default)
+    {
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", config.BasicAuth);
+		var result = await client.GetAsync("v1/token/generate?grant_type=client_credentials", cancellationToken)
+                           .ConfigureAwait(false);
+        if (!result.IsSuccessStatusCode)
+        {
+            var error = await result.Content.ReadFromJsonAsync<AuthErrorResponse>(cancellationToken);
+            throw new MpesaAPIException(result.StatusCode, new MpesaErrorResponse { ErrorCode = error?.ResultCode, ErrorMessage = error?.ResultDesc });
+        }
+        return await result.Content.ReadFromJsonAsync<AuthResponse>(Helper.SnakeCase, cancellationToken);
+    }
+
+    public async Task<MpesaResponse?> TransactionStatusAsync(TransactionStatus request, CancellationToken cancellationToken = default)
+    {
+        var result = await client.PostAsJsonAsync("mpesa/transactionstatus/v1/query", request, Helper.PascalCase, cancellationToken)
+                                 .ConfigureAwait(false);
+        if (!result.IsSuccessStatusCode)
+        {
+            var error = await result.Content.ReadFromJsonAsync<MpesaErrorResponse>(cancellationToken);
+            throw new MpesaAPIException(result.StatusCode, error!);
+        }
+        return await result.Content.ReadFromJsonAsync<MpesaResponse>(Helper.PascalCase, cancellationToken);
     }
 }

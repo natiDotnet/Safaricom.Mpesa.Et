@@ -9,6 +9,7 @@ namespace Safaricom.Mpesa.Et;
 
 public interface IMpesaClient
 {
-    Task<AuthResponse?> AuthorizeAsync();
-    Task<MpesaResponse?> TransactionStatusAsync(TransactionStatus request);
+    Task<AuthResponse?> AuthorizeAsync(CancellationToken cancellationToken = default);
+    Task<MpesaResponse?> TransactionStatusAsync(TransactionStatus request, CancellationToken cancellationToken = default);
+    Task<MpesaResponse?> AccountBalanceAsymc(AccountBalance request, CancellationToken cancellationToken = default);
 }
