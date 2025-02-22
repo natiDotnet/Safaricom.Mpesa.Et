@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
 using Safaricom.Mpesa.Et.Exceptions;
 using Safaricom.Mpesa.Et.Requests;
 using Safaricom.Mpesa.Et.Responses;
@@ -26,7 +22,7 @@ public class MpesaClient : IMpesaClient
        : this(new MpesaConfig { ConsumerKey = consumerKey, ConsumerSecret = consumerSecret })
     { }
 
-    public async Task<MpesaResponse?> AccountBalanceAsymc(AccountBalance request, CancellationToken cancellationToken = default)
+    public async Task<MpesaResponse?> AccountBalanceAsync(AccountBalance request, CancellationToken cancellationToken = default)
     {
         var result = await client.PostAsJsonAsync("mpesa/accountbalance/v2/query", request, Helper.PascalCase, cancellationToken)
                                  .ConfigureAwait(false);
@@ -49,6 +45,30 @@ public class MpesaClient : IMpesaClient
             throw new MpesaAPIException(result.StatusCode, new MpesaErrorResponse { ErrorCode = error?.ResultCode, ErrorMessage = error?.ResultDesc });
         }
         return await result.Content.ReadFromJsonAsync<AuthResponse>(Helper.SnakeCase, cancellationToken);
+    }
+
+    public async Task<MpesaResponse?> PayoutAsync(Payment request, CancellationToken cancellationToken = default)
+    {
+        var result = await client.PostAsJsonAsync("mpesa/b2c/v1/paymentrequest", request, Helper.PascalCase, cancellationToken)
+                           .ConfigureAwait(false);
+        if (!result.IsSuccessStatusCode)
+        {
+            var error = await result.Content.ReadFromJsonAsync<MpesaErrorResponse>(cancellationToken);
+            throw new MpesaAPIException(result.StatusCode, error!);
+        }
+        return await result.Content.ReadFromJsonAsync<MpesaResponse>(Helper.PascalCase, cancellationToken);
+    }
+
+    public async Task<MpesaResponse?> ReverseTransactionAsync(TransactionReversal request, CancellationToken cancellationToken = default)
+    {
+        var result = await client.PostAsJsonAsync("mpesa/reversal/v2/request", request, Helper.PascalCase, cancellationToken)
+                                 .ConfigureAwait(false);
+        if (!result.IsSuccessStatusCode)
+        {
+            var error = await result.Content.ReadFromJsonAsync<MpesaErrorResponse>(cancellationToken);
+            throw new MpesaAPIException(result.StatusCode, error!);
+        }
+        return await result.Content.ReadFromJsonAsync<MpesaResponse>(Helper.PascalCase, cancellationToken);
     }
 
     public async Task<MpesaResponse?> TransactionStatusAsync(TransactionStatus request, CancellationToken cancellationToken = default)

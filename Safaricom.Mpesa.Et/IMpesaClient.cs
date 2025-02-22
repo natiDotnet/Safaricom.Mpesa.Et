@@ -11,5 +11,7 @@ public interface IMpesaClient
 {
     Task<AuthResponse?> AuthorizeAsync(CancellationToken cancellationToken = default);
     Task<MpesaResponse?> TransactionStatusAsync(TransactionStatus request, CancellationToken cancellationToken = default);
-    Task<MpesaResponse?> AccountBalanceAsymc(AccountBalance request, CancellationToken cancellationToken = default);
+    Task<MpesaResponse?> AccountBalanceAsync(AccountBalance request, CancellationToken cancellationToken = default);
+    Task<MpesaResponse?> ReverseTransactionAsync(TransactionReversal request, CancellationToken cancellationToken = default);
+    Task<MpesaResponse?> PayoutAsync(Payment request, CancellationToken cancellationToken = default);
 }
