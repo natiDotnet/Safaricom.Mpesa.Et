@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Safaricom.Mpesa.Et.Requests;
 using Safaricom.Mpesa.Et.Responses;
 
@@ -14,4 +10,5 @@ public interface IMpesaClient
     Task<MpesaResponse?> AccountBalanceAsync(AccountBalance request, CancellationToken cancellationToken = default);
     Task<MpesaResponse?> ReverseTransactionAsync(TransactionReversal request, CancellationToken cancellationToken = default);
     Task<MpesaResponse?> PayoutAsync(Payment request, CancellationToken cancellationToken = default);
+    Task<MpesaResponse?> UssdPushAsync(CheckoutOnline request, CancellationToken cancellationToken = default);
 }

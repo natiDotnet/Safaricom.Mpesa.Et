@@ -82,4 +82,16 @@ public class MpesaClient : IMpesaClient
         }
         return await result.Content.ReadFromJsonAsync<MpesaResponse>(Helper.PascalCase, cancellationToken);
     }
+
+    public async Task<MpesaResponse?> UssdPushAsync(CheckoutOnline request, CancellationToken cancellationToken = default)
+    {
+        var result = await client.PostAsJsonAsync("mpesa/c2b/v1/simulate", request, Helper.PascalCase, cancellationToken)
+                                 .ConfigureAwait(false);
+        if (!result.IsSuccessStatusCode)
+        {
+            var error = await result.Content.ReadFromJsonAsync<MpesaErrorResponse>(cancellationToken);
+            throw new MpesaAPIException(result.StatusCode, error!);
+        }
+        return await result.Content.ReadFromJsonAsync<MpesaResponse>(Helper.PascalCase, cancellationToken);
+    }
 }
