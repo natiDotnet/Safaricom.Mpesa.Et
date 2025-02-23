@@ -59,6 +59,18 @@ public class MpesaClient : IMpesaClient
         return await result.Content.ReadFromJsonAsync<MpesaResponse>(Helper.PascalCase, cancellationToken);
     }
 
+    public async Task<MpesaResponse?> RegisterUrlAsync(string userName, C2BRegisterUrl request, CancellationToken cancellationToken = default)
+    {
+        var result = await client.PostAsJsonAsync($"v1/c2b-register-url/register?apikey={userName}", request, Helper.PascalCase, cancellationToken)
+                                 .ConfigureAwait(false);
+        if (!result.IsSuccessStatusCode)
+        {
+            var error = await result.Content.ReadFromJsonAsync<MpesaErrorResponse>(cancellationToken);
+            throw new MpesaAPIException(result.StatusCode, error!);
+        }
+        return await result.Content.ReadFromJsonAsync<MpesaResponse>(Helper.PascalCase, cancellationToken);
+    }
+
     public async Task<MpesaResponse?> ReverseTransactionAsync(TransactionReversal request, CancellationToken cancellationToken = default)
     {
         var result = await client.PostAsJsonAsync("mpesa/reversal/v2/request", request, Helper.PascalCase, cancellationToken)

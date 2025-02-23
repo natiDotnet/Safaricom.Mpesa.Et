@@ -49,7 +49,12 @@ namespace Safaricom.Mpesa.Et.Shared;
         /// Used to query the details of a transaction.
         /// </summary>
         public const string TransactionStatusQuery = "TransactionStatusQuery";
-
+        
+        /// <summary>
+        /// Used to register validation and confirmation URLs on M-Pesa to your API.
+        /// </summary>
+        public const string RefisterUrl = "RegisterURL";
+        
         /// <summary>
         /// Similar to STK push, uses M-Pesa PIN as a service.
         /// </summary>

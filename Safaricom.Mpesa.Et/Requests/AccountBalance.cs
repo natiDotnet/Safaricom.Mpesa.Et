@@ -25,7 +25,7 @@ public class AccountBalance
     /// <summary>
     /// A unique command passed to the M-Pesa system.
     /// </summary>
-    public string CommandID { get; private set; } = TransactionType.AccountBalance;
+    public readonly string CommandID = TransactionType.AccountBalance;
 
     /// <summary>
     /// The shortcode of the organisation receiving the transaction.
@@ -39,8 +39,8 @@ public class AccountBalance
     public IdentifierType IdentifierType { get; private set; }
 
     [JsonInclude]
-    [JsonPropertyName("IdentifierType")]
-    private string IdentifierTypeString => IdentifierType.ToString();
+    [JsonPropertyName(nameof(IdentifierType))]
+    private string _identifierType => IdentifierType.ToString();
 
     /// <summary>
     /// Comments that are sent along with the transaction.
@@ -75,7 +75,6 @@ public class AccountBalance
     {
         Initiator = initiator;
         SecurityCredential = securityCredential;
-        CommandID = TransactionType.AccountBalance;
         PartyA = partyA;
         IdentifierType = identifierType;
         Remarks = remarks;

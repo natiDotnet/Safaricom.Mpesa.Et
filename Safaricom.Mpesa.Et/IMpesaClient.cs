@@ -11,4 +11,5 @@ public interface IMpesaClient
     Task<MpesaResponse?> ReverseTransactionAsync(TransactionReversal request, CancellationToken cancellationToken = default);
     Task<MpesaResponse?> PayoutAsync(Payment request, CancellationToken cancellationToken = default);
     Task<MpesaResponse?> UssdPushAsync(CheckoutOnline request, CancellationToken cancellationToken = default);
+    Task<MpesaResponse?> RegisterUrlAsync(string userName, C2BRegisterUrl request, CancellationToken cancellationToken = default);
 }
