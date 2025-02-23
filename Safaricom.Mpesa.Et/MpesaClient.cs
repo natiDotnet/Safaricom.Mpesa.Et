@@ -84,8 +84,8 @@ public class MpesaClient : IMpesaClient
     }
 
     public async Task<MpesaResponse?> UssdPushAsync(CheckoutOnline request, CancellationToken cancellationToken = default)
-    {
-        var result = await client.PostAsJsonAsync("mpesa/c2b/v1/simulate", request, Helper.PascalCase, cancellationToken)
+    {    
+        var result = await client.PostAsJsonAsync("mpesa/stkpush/v3/processrequest", request, Helper.PascalCase, cancellationToken)
                                  .ConfigureAwait(false);
         if (!result.IsSuccessStatusCode)
         {
