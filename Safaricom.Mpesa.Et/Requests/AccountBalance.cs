@@ -10,8 +10,9 @@ namespace Safaricom.Mpesa.Et.Requests;
 /// <summary>
 /// AccountBalance data transfer object
 /// </summary>
-public class AccountBalance
+public class AccountBalance : MpesaRequest
 {
+    protected string? Type = nameof(AccountBalance);
     /// <summary>
     /// This is the credential/username used to authenticate the transaction request.
     /// </summary>

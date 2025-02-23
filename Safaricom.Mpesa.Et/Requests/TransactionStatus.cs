@@ -4,8 +4,9 @@ using Safaricom.Mpesa.Et.Shared;
 
 namespace Safaricom.Mpesa.Et.Requests;
 
-public class TransactionStatus
+public class TransactionStatus : MpesaRequest
 {
+    protected string? Type = nameof(TransactionStatus);
     /// <summary>
     /// The name of Initiator to initiating  the request.
     /// This is the credential/username used to authenticate the transaction request.

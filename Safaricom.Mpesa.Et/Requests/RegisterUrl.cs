@@ -10,8 +10,9 @@ namespace Safaricom.Mpesa.Et.Requests;
 /// <summary>
 /// C2B Register URLs data transfer object
 /// </summary>
-public class C2BRegisterUrl
+public class C2BRegisterUrl : MpesaRequest
 {
+    protected string? Type = nameof(C2BRegisterUrl);
     /// <summary>
     /// The short code of the organization. 
     /// </summary>      

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
@@ -16,7 +17,8 @@ public static class Startup
         {
             services.AddOptions<MpesaConfig>().BindConfiguration(MpesaConfig.Key);
         }
-        services.AddHttpClient<IMpesaClient>()
+        services.AddValidatorsFromAssembly(typeof(Startup).Assembly);
+        services.AddHttpClient<IMpesaClient>("mpesa")
             .AddTypedClient<IMpesaClient>((client, sp) =>
             {
                 string? environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");

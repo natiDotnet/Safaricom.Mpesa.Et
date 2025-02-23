@@ -11,10 +11,10 @@ namespace Safaricom.Mpesa.Et.Requests;
 /// <summary>
 /// STK Push data transfer object
 /// </summary>
-public class CheckoutOnline
+public class CheckoutOnline : MpesaRequest
 {
     #region Properties
-
+    protected string? Type = nameof(CheckoutOnline);
     /// <summary>
     /// This is a global unique Identifier for any submitted payment request.
     /// </summary>

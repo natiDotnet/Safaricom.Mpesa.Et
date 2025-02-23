@@ -10,9 +10,9 @@ namespace Safaricom.Mpesa.Et.Requests;
 /// <summary>
 /// Mpesa Transaction reversal data transfer object
 /// </summary>
-public class TransactionReversal
+public class TransactionReversal : MpesaRequest
 {
-
+    protected string? Type = nameof(TransactionReversal);
     /// <summary>
     /// The unique request ID for tracking a transaction
     /// </summary>

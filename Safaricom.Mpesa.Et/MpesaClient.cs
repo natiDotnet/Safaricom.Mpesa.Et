@@ -1,5 +1,6 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using Microsoft.Extensions.DependencyInjection;
 using Safaricom.Mpesa.Et.Exceptions;
 using Safaricom.Mpesa.Et.Requests;
 using Safaricom.Mpesa.Et.Responses;
@@ -15,7 +16,10 @@ public class MpesaClient : IMpesaClient
     public MpesaClient(MpesaConfig config, HttpClient? client = null)
     {
         this.config = config;
-        client ??= new HttpClient();
+        var services = new ServiceCollection().AddMpesa(config);
+        client ??= services.BuildServiceProvider()
+                           .GetRequiredService<IHttpClientFactory>()
+                           .CreateClient("mpesa");
         this.client = client;
     }
     public MpesaClient(string consumerKey, string consumerSecret)

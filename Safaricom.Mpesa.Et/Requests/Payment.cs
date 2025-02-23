@@ -9,8 +9,9 @@ namespace Safaricom.Mpesa.Et.Requests;
 /// <summary>
 /// B2C data transfer object
 /// </summary>
-public class Payment
+public class Payment : MpesaRequest
 {
+    protected string? Type = nameof(Payment);
     /// <summary>
     /// The unique request ID for tracking a transaction
     /// </summary>

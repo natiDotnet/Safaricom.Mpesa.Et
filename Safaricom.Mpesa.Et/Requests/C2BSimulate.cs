@@ -9,8 +9,9 @@ namespace Safaricom.Mpesa.Et.Requests;
 /// <summary>
 /// C2B Simulate data transfer object
 /// </summary>
-public class C2BSimulate
+public class C2BSimulate : MpesaRequest
 {
+    protected string Type = nameof(C2BSimulate);
     /// <summary>
     /// This is the Short Code receiving the amount being transacted.
     /// </summary>
