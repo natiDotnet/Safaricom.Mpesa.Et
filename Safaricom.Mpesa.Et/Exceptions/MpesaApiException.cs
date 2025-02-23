@@ -17,12 +17,12 @@ public class MpesaAPIException : Exception
     /// </summary>
     public HttpStatusCode StatusCode { get; set; }
 
-    public MpesaErrorResponse MpesaErrorResponse { get; set; }
 
-    public MpesaAPIException()
-    {
-    
-    }
+    /// <summary>
+    /// Mpesa Error Response object
+    /// </summary>
+    public MpesaErrorResponse? MpesaErrorResponse { get; set; }
+
     public MpesaAPIException(HttpStatusCode statusCode, string message) : base(message)
      => StatusCode = statusCode;
     

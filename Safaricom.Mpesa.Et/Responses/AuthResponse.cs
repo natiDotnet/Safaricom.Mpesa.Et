@@ -14,7 +14,7 @@ public class AuthResponse
 
 public class AuthErrorResponse
 {
-    public string ResultCode { get; set; }
-    public string ResultDesc { get; set; }   
+    public string? ResultCode { get; set; }
+    public string? ResultDesc { get; set; }   
     
 }
