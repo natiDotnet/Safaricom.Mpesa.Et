@@ -7,9 +7,9 @@ namespace Safaricom.Mpesa.Et.Responses;
 
 public class AuthResponse
 {
-    public string? AccessToken { get; set; }
-    public string? TokenType { get; set; }
-    public string? ExpiresIn { get; set; }
+    public string AccessToken { get; set; } = string.Empty;
+    public string TokenType { get; set; } = string.Empty;
+    public string ExpiresIn { get; set; } = string.Empty;
 }
 
 public class AuthErrorResponse

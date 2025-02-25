@@ -11,6 +11,7 @@ using FluentValidation.Results;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Safaricom.Mpesa.Et.Exceptions;
+using Safaricom.Mpesa.Et.Requests;
 using Safaricom.Mpesa.Et.Responses;
 
 namespace Safaricom.Mpesa.Et.DelegatingHandlers
@@ -24,7 +25,8 @@ namespace Safaricom.Mpesa.Et.DelegatingHandlers
         private readonly IServiceProvider _serviceProvider;
         private static readonly JsonSerializerOptions _jsonOptions = new()
         {
-            PropertyNameCaseInsensitive = true
+            PropertyNameCaseInsensitive = true,
+            IncludeFields = true
         };
 
         public ValidationHandler(ILogger<ValidationHandler> logger, IServiceProvider serviceProvider)
@@ -106,23 +108,56 @@ namespace Safaricom.Mpesa.Et.DelegatingHandlers
 
             return null;
         }
-
-        private async Task<HttpResponseMessage?> ValidateObjectAsync(object requestBody, Type requestType, CancellationToken cancellationToken)
+        private async Task<HttpResponseMessage?> ValidateAsync<T>(T requestBody, CancellationToken cancellationToken) where T : class
         {
-            var validatorType = typeof(IValidator<>).MakeGenericType(requestType);
-            var validator = _serviceProvider.GetService(validatorType) as IValidator;
+            var validator = _serviceProvider.GetService<IValidator<AccountBalance>>();
             if (validator is null)
             {
                 return null; // No validator found, continue processing
             }
 
-            var validationContextType = typeof(ValidationContext<>).MakeGenericType(requestType);
-            var validationContext = Activator.CreateInstance(validationContextType, requestBody);
+            ValidationContext<T> validationContext = new ValidationContext<T>(requestBody);
+            ValidationResult validationResult = await validator.ValidateAsync(validationContext, cancellationToken);
 
-            var validationResultTask = (Task<ValidationResult>)validatorType
-                .GetMethod("ValidateAsync")?
+            if (!validationResult.IsValid)
+            {
+                var errorResponse = new MpesaErrorResponse
+                {
+                    ErrorCode = HttpStatusCode.BadRequest.ToString(),
+                    ErrorMessage = validationResult.Errors[0].ErrorMessage
+                };
+
+                throw new MpesaAPIException(HttpStatusCode.BadRequest, errorResponse);
+            }
+
+            return null;
+        }
+
+        private async Task<HttpResponseMessage?> ValidateObjectAsync(object requestBody, Type requestType, CancellationToken cancellationToken)
+        {
+            var validatorType = typeof(IValidator<>).MakeGenericType(requestType);
+            if (_serviceProvider.GetService(validatorType) is not IValidator validator)
+            {
+                return null; // No validator found, continue processing
+            }
+
+            // Create ValidationContext<T> dynamically
+            Type validationContextType = typeof(ValidationContext<>).MakeGenericType(requestType);
+            object? validationContext = Activator.CreateInstance(validationContextType, requestBody);
+
+            // Get the correct ValidateAsync overload
+            var validateAsyncMethod = validatorType.GetMethod(
+                "ValidateAsync",
+                new[]
+                {
+                    validationContextType,
+                    typeof(CancellationToken)
+                }
+            );
+
+            // Invoke the method with ValidationContext<T>
+            Task<ValidationResult> validationResultTask = (Task<ValidationResult>)validateAsyncMethod
                 .Invoke(validator, new object[] { validationContext!, cancellationToken })!;
-
             var validationResult = await validationResultTask;
             if (!validationResult.IsValid)
             {

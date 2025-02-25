@@ -1,10 +1,20 @@
+using Microsoft.AspNetCore.Mvc;
+using Safaricom.Mpesa.Et;
+using Safaricom.Mpesa.Et.Requests;
+using Safaricom.Mpesa.Et.Shared;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+var config = new MpesaConfig
+{
+    ConsumerKey = "key",
+    ConsumerSecret = "Secret",
+};
+builder.Services.AddMpesa(config);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -35,6 +45,23 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast")
 .WithOpenApi();
+
+app.MapGet("/mpesa", async ([FromServices] IMpesaClient mpesa) =>
+{
+    //var mpesa = new MpesaClient(new MpesaConfig { ConsumerKey= "key", ConsumerSecret= "secret" });
+    var balance = new AccountBalance
+    {
+        Initiator = "testapi",
+        SecurityCredential = "SecurityCredential",
+        PartyA = "600000",
+        IdentifierType = IdentifierType.Organization,
+        Remarks = "Remarks",
+        QueueTimeOutURL = "https://example.com/timeout",
+        ResultURL = "https://example.com/result",
+    };
+    var r = await mpesa.AccountBalanceAsync(balance);
+    return "Hello World!";
+}).WithOpenApi();
 
 app.Run();
 
