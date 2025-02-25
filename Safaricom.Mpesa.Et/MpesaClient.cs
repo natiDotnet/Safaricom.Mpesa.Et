@@ -17,9 +17,10 @@ public class MpesaClient : IMpesaClient
     {
         this.config = config;
         var services = new ServiceCollection().AddMpesa(config);
-        client ??= services.BuildServiceProvider()
-                           .GetRequiredService<IHttpClientFactory>()
-                           .CreateClient("mpesa");
+        client ??= new HttpClient();
+        // services.BuildServiceProvider()
+        //                   .GetRequiredService<IHttpClientFactory>()
+        //                   .CreateClient("mpesa");
         this.client = client;
     }
     public MpesaClient(string consumerKey, string consumerSecret)

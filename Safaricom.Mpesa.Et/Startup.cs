@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Safaricom.Mpesa.Et.DelegatingHandlers;
+using Safaricom.Mpesa.Et.Shared;
 
 namespace Safaricom.Mpesa.Et;
 
@@ -17,8 +14,17 @@ public static class Startup
         {
             services.AddOptions<MpesaConfig>().BindConfiguration(MpesaConfig.Key);
         }
+        services.AddTransient<LoggingHandler>()
+            .AddTransient<TokenHandler>()
+            .AddTransient<ValidationHandler>()
+            .AddSingleton<IEncryptionService>(sp => 
+            {
+                config ??= sp.GetRequiredService<IOptions<MpesaConfig>>().Value;
+                return new EncryptionService(config);
+            })
+            .AddMemoryCache();
         services.AddValidatorsFromAssembly(typeof(Startup).Assembly);
-        services.AddHttpClient<IMpesaClient>("mpesa")
+        services.AddHttpClient<IMpesaClient>()
             .AddTypedClient<IMpesaClient>((client, sp) =>
             {
                 string? environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
@@ -30,7 +36,8 @@ public static class Startup
                 client.BaseAddress = new Uri(baseUrl);
 			    
                 return new MpesaClient(config, client);
-            });
+            })
+            .AddHttpMessageHandler<LoggingHandler>();
         return services;
     }
     

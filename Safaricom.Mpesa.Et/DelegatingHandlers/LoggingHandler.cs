@@ -17,7 +17,7 @@ public class LoggingHandler : DelegatingHandler
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation($"Request: {request}");
+        _logger.LogInformation($"Request: {await request.Content.ReadAsStringAsync()}");
         var response = await base.SendAsync(request, cancellationToken);
         _logger.LogInformation($"Response: {response}");
         return response;
