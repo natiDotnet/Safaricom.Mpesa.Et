@@ -10,10 +10,8 @@ namespace Safaricom.Mpesa.Et.Requests;
 /// <summary>
 /// AccountBalance data transfer object
 /// </summary>
-public class AccountBalance : MpesaRequest
+public class AccountBalance
 {
-    [JsonInclude]
-    protected new string? Type = typeof(AccountBalance).FullName;
     /// <summary>
     /// This is the credential/username used to authenticate the transaction request.
     /// </summary>
@@ -42,11 +40,7 @@ public class AccountBalance : MpesaRequest
 
     [JsonInclude]
     [JsonPropertyName(nameof(IdentifierType))]
-    private string identifierType 
-    { 
-        get => ((int)IdentifierType).ToString();
-        set => IdentifierType = (IdentifierType)Enum.Parse(typeof(IdentifierType), value); 
-    }
+    private string identifierType => ((int)IdentifierType).ToString();
 
     /// <summary>
     /// Comments that are sent along with the transaction.
