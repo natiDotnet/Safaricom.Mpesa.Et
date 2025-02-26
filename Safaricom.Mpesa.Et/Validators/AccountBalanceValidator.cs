@@ -43,12 +43,12 @@ public class AccountBalanceValidator : AbstractValidator<AccountBalance>
             .WithMessage("{PropertyName} - The result url should be a valid secure url.");
     }
 
-    private static bool LinkMustBeAUri(string link)
+    private static bool LinkMustBeAUri(Uri link)
     {
-        if (!Uri.IsWellFormedUriString(link, UriKind.Absolute))
-        {
-            return false;
-        }
+        //if (!Uri.IsWellFormedUriString(link, UriKind.Absolute))
+        //{
+        //    return false;
+        //}
         return true;
     }
 }

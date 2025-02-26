@@ -13,14 +13,18 @@ namespace Safaricom.Mpesa.Et.Requests;
 public class AccountBalance
 {
     /// <summary>
+    /// The unique request ID for tracking a transaction.
+    /// </summary>
+    public required Guid OriginatorConversationID { get; set; }
+    /// <summary>
     /// This is the credential/username used to authenticate the transaction request.
     /// </summary>
-    public string Initiator { get; set; }
+    public required string Initiator { get; set; }
 
     /// <summary>
     /// Base64 encoded string of the M-Pesa short code and password, which is encrypted using M-Pesa public key and validates the transaction on M-Pesa Core system.
     /// </summary>
-    public string SecurityCredential { get; set; }
+    public required string SecurityCredential { get; set; }
 
     /// <summary>
     /// A unique command passed to the M-Pesa system.
@@ -30,13 +34,13 @@ public class AccountBalance
     /// <summary>
     /// The shortcode of the organisation receiving the transaction.
     /// </summary>
-    public string PartyA { get; set; }
+    public required string PartyA { get; set; }
 
     /// <summary>
     /// Type of the organisation receiving the transaction.
     /// </summary>
     [JsonIgnore]
-    public IdentifierType IdentifierType { get; set; }
+    public IdentifierType IdentifierType { get; set; } = IdentifierType.Organization;
 
     [JsonInclude]
     [JsonPropertyName(nameof(IdentifierType))]
@@ -45,16 +49,16 @@ public class AccountBalance
     /// <summary>
     /// Comments that are sent along with the transaction.
     /// </summary>
-    public string Remarks { get; set; }
+    public required string Remarks { get; set; }
 
     /// <summary>
     /// The timeout end-point that receives a timeout message.
     /// </summary>
-    public string QueueTimeOutURL { get; set; }
+    public required Uri QueueTimeOutURL { get; set; }
 
     /// <summary>
     /// The end-point that receives a successful transaction.
     /// </summary>
-    public string ResultURL { get; set; }
+    public required Uri ResultURL { get; set; }
 
 }

@@ -17,6 +17,7 @@ public static class Helper
     public static JsonSerializerOptions PascalCase => new JsonSerializerOptions
     {
         PropertyNamingPolicy = null,
+        IncludeFields = true,
         WriteIndented = true
     };
 }

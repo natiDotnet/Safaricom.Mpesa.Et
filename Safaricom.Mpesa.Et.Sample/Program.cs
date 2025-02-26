@@ -11,8 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 var config = new MpesaConfig
 {
-    ConsumerKey = "key",
-    ConsumerSecret = "Secret",
+    ConsumerKey = "7FX34gPG1KBLuNRGxlqRMaEcZEa7sx6itGRl9Ttaxs8fEScP",
+    ConsumerSecret = "7FX34gPG1KBLuNRGxlqRMaEcZEa7sx6itGRl9Ttaxs8fEScP",
 };
 builder.Services.AddMpesa(config);
 var app = builder.Build();
@@ -33,7 +33,7 @@ var summaries = new[]
 
 app.MapGet("/weatherforecast", () =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
+    var forecast = Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast
         (
             DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
@@ -51,13 +51,14 @@ app.MapGet("/mpesa", async ([FromServices] IMpesaClient mpesa) =>
     //var mpesa = new MpesaClient(new MpesaConfig { ConsumerKey= "key", ConsumerSecret= "secret" });
     var balance = new AccountBalance
     {
+        OriginatorConversationID = Guid.NewGuid(),
         Initiator = "testapi",
         SecurityCredential = "SecurityCredential",
         PartyA = "600000",
         IdentifierType = IdentifierType.Organization,
         Remarks = "Remarks",
-        QueueTimeOutURL = "https://example.com/timeout",
-        ResultURL = "https://example.com/result",
+        QueueTimeOutURL = new Uri("https://example.com/timeout"),
+        ResultURL = new Uri("https://example.com/result"),
     };
     var r = await mpesa.AccountBalanceAsync(balance);
     return "Hello World!";
