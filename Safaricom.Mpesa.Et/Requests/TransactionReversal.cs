@@ -11,12 +11,12 @@ namespace Safaricom.Mpesa.Et.Requests;
 /// <summary>
 /// Mpesa Transaction reversal data transfer object
 /// </summary>
-public class TransactionReversal : MpesaRequest
+public class TransactionReversal
 {
     /// <summary>
     /// The unique request ID for tracking a transaction
     /// </summary>
-    public required Guid OriginatorConversationID { get; set; }
+    public required string OriginatorConversationID { get; set; }
 
     /// <summary>
     /// The name of Initiator to initiating  the request
@@ -46,7 +46,7 @@ public class TransactionReversal : MpesaRequest
     /// </summary>
     [JsonIgnore]
     public required int Amount { get; set; }
-    
+
     /// <summary>
     /// The unique identifier of a transaction that is used to reverse the transaction.
     /// </summary>
@@ -67,7 +67,7 @@ public class TransactionReversal : MpesaRequest
     /// </summary>
     [JsonIgnore]
     public required RecieverIdentifierType RecieverIdentifierType { get; set; }
-    
+
     [JsonInclude]
     [JsonPropertyName(nameof(RecieverIdentifierType))]
     private string recieverIdentifierType => ((int)RecieverIdentifierType).ToString();

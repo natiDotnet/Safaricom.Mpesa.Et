@@ -51,7 +51,7 @@ app.MapGet("/mpesa", async ([FromServices] IMpesaClient mpesa) =>
     //var mpesa = new MpesaClient(new MpesaConfig { ConsumerKey= "key", ConsumerSecret= "secret" });
     var balance = new AccountBalance
     {
-        OriginatorConversationID = Guid.NewGuid(),
+        OriginatorConversationID = string.Empty,
         Initiator = "testapi",
         SecurityCredential = "SecurityCredential",
         PartyA = "600000",

@@ -4,7 +4,7 @@ using Safaricom.Mpesa.Et.Shared;
 
 namespace Safaricom.Mpesa.Et.Requests;
 
-public class TransactionStatus : MpesaRequest
+public class TransactionStatus
 {
     /// <summary>
     /// The name of Initiator to initiating  the request.

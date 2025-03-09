@@ -5,12 +5,12 @@ namespace Safaricom.Mpesa.Et.Requests;
 /// <summary>
 /// B2C data transfer object
 /// </summary>
-public class Payment : MpesaRequest
+public class Payment
 {
     /// <summary>
     /// The unique request ID for tracking a transaction
     /// </summary>
-    public required Guid OriginatorConversationID { get; set; }
+    public required string OriginatorConversationID { get; set; }
 
     /// <summary>
     /// The username of the M-Pesa B2C account API operator.

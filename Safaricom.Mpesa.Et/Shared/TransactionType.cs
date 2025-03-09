@@ -6,122 +6,122 @@ using System.Threading.Tasks;
 namespace Safaricom.Mpesa.Et.Shared;
 
 /// <summary>
-    /// This is a unique command that specifies transaction type.
+/// This is a unique command that specifies transaction type.
+/// </summary>
+public static class TransactionType
+{
+    /// <summary>
+    /// Reversal for an erroneous C2B transaction
     /// </summary>
-    public static class TransactionType
-    {
-        /// <summary>
-        /// Reversal for an erroneous C2B transaction
-        /// </summary>
-        public const string TransactionReversal = "TransactionReversal";
+    public const string TransactionReversal = "TransactionReversal";
 
-        /// <summary>
-        /// This supports sending money to both registered and unregistered M-Pesa customers. Used to send money from an employer to employees e.g. salaries.
-        /// </summary>
-        public const string SalaryPayment = "SalaryPayment";
+    /// <summary>
+    /// This supports sending money to both registered and unregistered M-Pesa customers. Used to send money from an employer to employees e.g. salaries.
+    /// </summary>
+    public const string SalaryPayment = "SalaryPayment";
 
-        /// <summary>
-        /// This is a normal business to customer payment, send money from an employer to employees and supports only M-Pesa registered customers e.g. refunds.
-        /// </summary>
-        public const string BusinessPayment = "BusinessPayment";
+    /// <summary>
+    /// This is a normal business to customer payment, send money from an employer to employees and supports only M-Pesa registered customers e.g. refunds.
+    /// </summary>
+    public const string BusinessPayment = "BusinessPayment";
 
-        /// <summary>
-        /// This is a promotional payment to customers. The M-Pesa notification message is a congratulatory message. Supports only M-Pesa registered customers. Used to send money when promotions take place e.g. raffle winners.
-        /// </summary>
-        public const string PromotionPayment = "PromotionPayment";
+    /// <summary>
+    /// This is a promotional payment to customers. The M-Pesa notification message is a congratulatory message. Supports only M-Pesa registered customers. Used to send money when promotions take place e.g. raffle winners.
+    /// </summary>
+    public const string PromotionPayment = "PromotionPayment";
 
-        /// <summary>
-        /// Used to check the balance in a paybill/buy goods account (includes utility, MMF, Merchant, Charges paid account).
-        /// </summary>
-        public const string AccountBalance = "AccountBalance";
+    /// <summary>
+    /// Used to check the balance in a paybill/buy goods account (includes utility, MMF, Merchant, Charges paid account).
+    /// </summary>
+    public const string AccountBalance = "AccountBalance";
 
-        /// <summary>
-        /// Used to simulate a transaction taking place in the case of C2B Simulate Transaction or to initiate a transaction on behalf of the customer (STK Push).
-        /// </summary>
-        public const string CustomerPayBillOnline = "CustomerPayBillOnline";
+    /// <summary>
+    /// Used to simulate a transaction taking place in the case of C2B Simulate Transaction or to initiate a transaction on behalf of the customer (STK Push).
+    /// </summary>
+    public const string CustomerPayBillOnline = "CustomerPayBillOnline";
 
-        /// <summary>
-        /// Used to simulate a transaction taking place in the case of C2B Simulate Transaction or to initiate a transaction on behalf of the customer (STK Push).
-        /// </summary>
-        public const string CustomerBuyGoodsOnline = "CustomerBuyGoodsOnline";
+    /// <summary>
+    /// Used to simulate a transaction taking place in the case of C2B Simulate Transaction or to initiate a transaction on behalf of the customer (STK Push).
+    /// </summary>
+    public const string CustomerBuyGoodsOnline = "CustomerBuyGoodsOnline";
 
-        /// <summary>
-        /// Used to query the details of a transaction.
-        /// </summary>
-        public const string TransactionStatusQuery = "TransactionStatusQuery";
-        
-        /// <summary>
-        /// Used to register validation and confirmation URLs on M-Pesa to your API.
-        /// </summary>
-        public const string RefisterUrl = "RegisterURL";
-        
-        /// <summary>
-        /// Similar to STK push, uses M-Pesa PIN as a service.
-        /// </summary>
-        public const string CheckIdentity = "CheckIdentity";
+    /// <summary>
+    /// Used to query the details of a transaction.
+    /// </summary>
+    public const string TransactionStatusQuery = "TransactionStatusQuery";
 
-        /// <summary>
-        /// Sending funds from one paybill to another paybill
-        /// </summary>
-        public const string BusinessPayBill = "BusinessPayBill";
+    /// <summary>
+    /// Used to register validation and confirmation URLs on M-Pesa to your API.
+    /// </summary>
+    public const string RegisterUrl = "RegisterURL";
 
-        /// <summary>
-        /// Sending funds from buy goods to another buy goods.
-        /// </summary>
-        public const string BusinessBuyGoods = "BusinessBuyGoods";
+    /// <summary>
+    /// Similar to STK push, uses M-Pesa PIN as a service.
+    /// </summary>
+    public const string CheckIdentity = "CheckIdentity";
 
-        /// <summary>
-        /// Transfer of funds from utility to MMF account.
-        /// </summary>
-        public const string DisburseFundsToBusiness = "DisburseFundsToBusiness";
+    /// <summary>
+    /// Sending funds from one paybill to another paybill
+    /// </summary>
+    public const string BusinessPayBill = "BusinessPayBill";
 
-        /// <summary>
-        /// Transferring funds from one paybills MMF to another paybills MMF account.
-        /// </summary>
-        public const string BusinessToBusinessTransfer = "BusinessToBusinessTransfer";
+    /// <summary>
+    /// Sending funds from buy goods to another buy goods.
+    /// </summary>
+    public const string BusinessBuyGoods = "BusinessBuyGoods";
 
-        /// <summary>
-        /// Transferring funds from paybills MMF to another paybills utility account.
-        /// </summary>
-        public const string BusinessTransferFromMMFToUtility = "BusinessTransferFromMMFToUtility";
+    /// <summary>
+    /// Transfer of funds from utility to MMF account.
+    /// </summary>
+    public const string DisburseFundsToBusiness = "DisburseFundsToBusiness";
 
-        /// <summary>
-        /// MerchantToMerchantTransfer Command ID
-        /// </summary>
-        public const string MerchantToMerchantTransfer = "MerchantToMerchantTransfer";
+    /// <summary>
+    /// Transferring funds from one paybills MMF to another paybills MMF account.
+    /// </summary>
+    public const string BusinessToBusinessTransfer = "BusinessToBusinessTransfer";
 
-        /// <summary>
-        /// MerchantTransferFromMerchantToWorking Command ID
-        /// </summary>
-        public const string MerchantTransferFromMerchantToWorking = "MerchantTransferFromMerchantToWorking";
+    /// <summary>
+    /// Transferring funds from paybills MMF to another paybills utility account.
+    /// </summary>
+    public const string BusinessTransferFromMMFToUtility = "BusinessTransferFromMMFToUtility";
 
-        /// <summary>
-        /// MerchantServicesMMFAccountTransfer Command ID
-        /// </summary>
-        public const string MerchantServicesMMFAccountTransfer = "MerchantServicesMMFAccountTransfer";
+    /// <summary>
+    /// MerchantToMerchantTransfer Command ID
+    /// </summary>
+    public const string MerchantToMerchantTransfer = "MerchantToMerchantTransfer";
 
-        /// <summary>
-        /// AgencyFloatAdvance Command ID
-        /// </summary>
-        public const string AgencyFloatAdvance = "AgencyFloatAdvance";
+    /// <summary>
+    /// MerchantTransferFromMerchantToWorking Command ID
+    /// </summary>
+    public const string MerchantTransferFromMerchantToWorking = "MerchantTransferFromMerchantToWorking";
 
-        /// <summary>
-        /// PayTaxToKRA Command ID
-        /// </summary>
-        public const string PayTaxToKRA = "PayTaxToKRA";
+    /// <summary>
+    /// MerchantServicesMMFAccountTransfer Command ID
+    /// </summary>
+    public const string MerchantServicesMMFAccountTransfer = "MerchantServicesMMFAccountTransfer";
 
-        /// <summary>
-        /// BusinessPayToBulk Command ID
-        /// </summary>
-        public const string BusinessPayToBulk = "BusinessPayToBulk";
+    /// <summary>
+    /// AgencyFloatAdvance Command ID
+    /// </summary>
+    public const string AgencyFloatAdvance = "AgencyFloatAdvance";
 
-        /// <summary>
-        /// Standing Order Transaction Type
-        /// </summary>
-        public const string StandingOrderPaybill = "Standing Order Customer Pay Bill";
+    /// <summary>
+    /// PayTaxToKRA Command ID
+    /// </summary>
+    public const string PayTaxToKRA = "PayTaxToKRA";
 
-		/// <summary>
-		/// Standing Order Transaction Type
-		/// </summary>
-		public const string StandingOrderTillNumber = "Standing Order Customer Pay Merchant";
-	}
+    /// <summary>
+    /// BusinessPayToBulk Command ID
+    /// </summary>
+    public const string BusinessPayToBulk = "BusinessPayToBulk";
+
+    /// <summary>
+    /// Standing Order Transaction Type
+    /// </summary>
+    public const string StandingOrderPaybill = "Standing Order Customer Pay Bill";
+
+    /// <summary>
+    /// Standing Order Transaction Type
+    /// </summary>
+    public const string StandingOrderTillNumber = "Standing Order Customer Pay Merchant";
+}

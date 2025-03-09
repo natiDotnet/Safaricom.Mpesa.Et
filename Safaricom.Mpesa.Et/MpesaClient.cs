@@ -42,7 +42,7 @@ public class MpesaClient : IMpesaClient
     public async Task<AuthResponse?> AuthorizeAsync(CancellationToken cancellationToken = default)
     {
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", config.BasicAuth);
-		var result = await client.GetAsync("v1/token/generate?grant_type=client_credentials", cancellationToken)
+        var result = await client.GetAsync("v1/token/generate?grant_type=client_credentials", cancellationToken)
                            .ConfigureAwait(false);
         if (!result.IsSuccessStatusCode)
         {
@@ -76,7 +76,7 @@ public class MpesaClient : IMpesaClient
         return await result.Content.ReadFromJsonAsync<MpesaResponse>(Helper.PascalCase, cancellationToken);
     }
 
-    public async Task<MpesaResponse?> RegisterUrlAsync(string userName, C2BRegisterUrl request, CancellationToken cancellationToken = default)
+    public async Task<MpesaResponse?> RegisterUrlAsync(string userName, C2BRegister request, CancellationToken cancellationToken = default)
     {
         var result = await client.PostAsJsonAsync($"v1/c2b-register-url/register?apikey={userName}", request, Helper.PascalCase, cancellationToken)
                                  .ConfigureAwait(false);
@@ -113,7 +113,7 @@ public class MpesaClient : IMpesaClient
     }
 
     public async Task<MpesaResponse?> UssdPushAsync(CheckoutOnline request, CancellationToken cancellationToken = default)
-    {    
+    {
         var result = await client.PostAsJsonAsync("mpesa/stkpush/v3/processrequest", request, Helper.PascalCase, cancellationToken)
                                  .ConfigureAwait(false);
         if (!result.IsSuccessStatusCode)

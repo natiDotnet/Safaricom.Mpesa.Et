@@ -16,18 +16,17 @@ public static class Startup
         {
             services.AddOptions<MpesaConfig>().BindConfiguration(MpesaConfig.Key);
         }
+        string? environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
         services.AddTransient<LoggingHandler>()
             .AddTransient<TokenHandler>(sp =>
             {
-                string? environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
                 config ??= sp.GetRequiredService<IOptions<MpesaConfig>>().Value;
                 var cache = sp.GetRequiredService<IMemoryCache>();
                 var encryptionService = sp.GetRequiredService<IEncryptionService>();
                 var logger = sp.GetRequiredService<ILogger<TokenHandler>>();
                 return new TokenHandler(config, environment, cache, encryptionService, logger);
             })
-            .AddTransient<ValidationHandler>()
-            .AddSingleton<IEncryptionService>(sp => 
+            .AddSingleton<IEncryptionService>(sp =>
             {
                 config ??= sp.GetRequiredService<IOptions<MpesaConfig>>().Value;
                 return new EncryptionService(config);
@@ -37,19 +36,17 @@ public static class Startup
         services.AddHttpClient<IMpesaClient>()
             .AddTypedClient<IMpesaClient>((client, sp) =>
             {
-                string? environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-                Console.WriteLine($"Current Environment: {environment}");
                 string baseUrl = environment!.Equals("Development", StringComparison.OrdinalIgnoreCase)
-                    ? "https://apisandbox.safaricom.et/"
-                    : "https://api.safaricom.et/";
+                    ? MpesaConfig.SandboxBaseUrl
+                    : MpesaConfig.ProductionBaseUrl;
                 config ??= sp.GetRequiredService<IOptions<MpesaConfig>>().Value;
                 client.BaseAddress = new Uri(baseUrl);
-			    
+
                 return new MpesaClient(config, client);
             })
             .AddHttpMessageHandler<LoggingHandler>()
             .AddHttpMessageHandler<TokenHandler>();
         return services;
     }
-    
+
 }

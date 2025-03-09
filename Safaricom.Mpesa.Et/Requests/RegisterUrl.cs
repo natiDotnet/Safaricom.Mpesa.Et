@@ -10,12 +10,12 @@ namespace Safaricom.Mpesa.Et.Requests;
 /// <summary>
 /// C2B Register URLs data transfer object
 /// </summary>
-public class C2BRegisterUrl : MpesaRequest
+public class C2BRegister
 {
     /// <summary>
     /// The short code of the organization. 
     /// </summary>      
-    public string ShortCode { get; set; }
+    public required string ShortCode { get; set; }
 
     /// <summary>
     /// This parameter specifies what is to happen if for any reason the validation URL is nor reachable. 
@@ -28,28 +28,28 @@ public class C2BRegisterUrl : MpesaRequest
     /// reach your Validation URL.
     /// </summary>
     [JsonIgnore]
-    public ResponseType ResponseType { get; set; }
-    
+    public required ResponseType ResponseType { get; set; }
+
     [JsonInclude]
     [JsonPropertyName(nameof(ResponseType))]
-    private string _responseType => ResponseType.ToString();
-    
+    private string responseType => ResponseType.ToString();
 
     /// <summary>
     /// A unique command passed to the M-Pesa system.
     /// </summary>
-    public readonly string CommandID = TransactionType.RefisterUrl;
+    public readonly string CommandID = TransactionType.RegisterUrl;
+
     /// <summary>
     /// This is the URL that receives the confirmation request from API upon payment completion.
     /// </summary>
-    public string ConfirmationURL { get; set; }
+    public required Uri ConfirmationURL { get; set; }
 
     /// <summary>
     /// This is the URL that receives the validation request from API upon payment submission. 
     /// The validation URL is only called if the external validation on the registered shortcode is enabled. 
     /// (By default External Validation is dissabled, contact MPESA API team if you want this enbaled for your app)
     /// </summary>
-    public string ValidationURL { get; set; }
+    public required Uri ValidationURL { get; set; }
 }
 
 public enum ResponseType
