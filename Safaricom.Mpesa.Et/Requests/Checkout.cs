@@ -11,19 +11,18 @@ namespace Safaricom.Mpesa.Et.Requests;
 /// <summary>
 /// STK Push data transfer object
 /// </summary>
-public class CheckoutOnline : MpesaRequest
+public class CheckoutOnline
 {
-    #region Properties
     /// <summary>
     /// This is a global unique Identifier for any submitted payment request.
     /// </summary>
-    public Guid? MerchantRequestID { get; set; }
+    public required Guid MerchantRequestID { get; set; }
 
     /// <summary>
     /// This is organizations shortcode (Paybill or Buygoods - A 5 to 6 digit account number) 
     /// used to identify an organization and receive the transaction.
     /// </summary>
-    public string BusinessShortCode { get; set; }
+    public required string BusinessShortCode { get; set; }
     
     /// <summary>
     /// This is the password used for encrypting the request sent: A base64 encoded string. 
@@ -43,7 +42,7 @@ public class CheckoutOnline : MpesaRequest
 
     [JsonInclude]
     [JsonPropertyName(nameof(Timestamp))]
-    private string _timestamp => Timestamp.ToString("yyyyMMddHHmmss");
+    private string timestamp => Timestamp.ToString("yyyyMMddHHmmss");
     /// <summary>
     /// This is the transaction type that is used to identify the transaction when sending the request to M-Pesa. 
     /// The transaction type for M-Pesa Express is "CustomerPayBillOnline" 
@@ -58,12 +57,12 @@ public class CheckoutOnline : MpesaRequest
     /// This is the Amount transacted, normally a numeric value. Money that customer pays to the Shorcode. 
     /// Only whole numbers are supported.
     /// </summary>
-    [JsonIgnore]
+    //[JsonIgnore]
     public int Amount { get; set; }
 
-    [JsonInclude]
-    [JsonPropertyName(nameof(Amount))]
-    private string _amount => Amount.ToString();
+    //[JsonInclude]
+    //[JsonPropertyName(nameof(Amount))]
+    //private string amount => Amount.ToString();
     /// <summary>
     /// The phone number sending money. The parameter expected is a Valid Safaricom Mobile Number 
     /// that is M-Pesa registered in the format 2517XXXXXXXX
@@ -86,7 +85,7 @@ public class CheckoutOnline : MpesaRequest
     /// A CallBack URL is a valid secure URL that is used to receive notifications from M-Pesa API. 
     /// It is the endpoint to which the results will be sent by M-Pesa API.
     /// </summary>
-    public string CallBackURL { get; set; }
+    public Uri CallBackURL { get; set; }
 
     /// <summary>
     /// Account Reference: This is an Alpha-Numeric parameter that is defined by your system as an Identifier 
@@ -110,8 +109,6 @@ public class CheckoutOnline : MpesaRequest
     /// </summary>
     public string Passkey { get; set; }
 
-    
-    #endregion
     #region PrivateMethods
     /// <summary>
     /// This method creates the necessary base64 encoded string that encrypts the request sent 

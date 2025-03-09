@@ -54,7 +54,7 @@ public class TransactionReversal : MpesaRequest
 
     [JsonInclude]
     [JsonPropertyName(nameof(Amount))]
-    private string _amount => Amount.ToString();
+    private string amount => Amount.ToString();
 
     /// <summary>
     /// Organization receiving the transaction (Shortcode)
@@ -65,17 +65,22 @@ public class TransactionReversal : MpesaRequest
     /// Type of organization receiving the transaction.
     /// 11 - Organization Identifier on M-Pesa
     /// </summary>
-    public required string RecieverIdentifierType { get; set; }
+    [JsonIgnore]
+    public required RecieverIdentifierType RecieverIdentifierType { get; set; }
+    
+    [JsonInclude]
+    [JsonPropertyName(nameof(RecieverIdentifierType))]
+    private string recieverIdentifierType => ((int)RecieverIdentifierType).ToString();
 
     /// <summary>
     /// The path that stores information of time out transaction.
     /// </summary>
-    public required string QueueTimeOutURL { get; set; }
+    public required Uri QueueTimeOutURL { get; set; }
 
     /// <summary>
     /// The path that stores information of transaction 
     /// </summary>
-    public required string ResultURL { get; set; }
+    public required Uri ResultURL { get; set; }
 
     /// <summary>
     /// Comments that are sent along with the transaction. (Upto 100 characters)
@@ -85,5 +90,13 @@ public class TransactionReversal : MpesaRequest
     /// <summary>
     /// Optional Parameter (upto 100 characters)
     /// </summary>
-    public string? Occasion { get; set; }
+    public string Occasion { get; set; } = string.Empty;
+}
+
+public enum RecieverIdentifierType
+{
+    /// <summary>
+    /// Organization Identifier on M-Pesa
+    /// </summary>
+    Organization = 11
 }

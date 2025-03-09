@@ -20,4 +20,8 @@ public static class Helper
         IncludeFields = true,
         WriteIndented = true
     };
+    // public static string EncodePassword(string shortCode, string passkey, string timestamp)
+    // {
+    //     return Convert.ToBase64String(Encoding.UTF8.GetBytes($"{shortCode}{passkey}{timestamp}"));
+    // }
 }
