@@ -1,5 +1,7 @@
 using FluentValidation;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Safaricom.Mpesa.Et.DelegatingHandlers;
 using Safaricom.Mpesa.Et.Shared;
@@ -15,7 +17,15 @@ public static class Startup
             services.AddOptions<MpesaConfig>().BindConfiguration(MpesaConfig.Key);
         }
         services.AddTransient<LoggingHandler>()
-            .AddTransient<TokenHandler>()
+            .AddTransient<TokenHandler>(sp =>
+            {
+                string? environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+                config ??= sp.GetRequiredService<IOptions<MpesaConfig>>().Value;
+                var cache = sp.GetRequiredService<IMemoryCache>();
+                var encryptionService = sp.GetRequiredService<IEncryptionService>();
+                var logger = sp.GetRequiredService<ILogger<TokenHandler>>();
+                return new TokenHandler(config, environment, cache, encryptionService, logger);
+            })
             .AddTransient<ValidationHandler>()
             .AddSingleton<IEncryptionService>(sp => 
             {
@@ -37,7 +47,8 @@ public static class Startup
 			    
                 return new MpesaClient(config, client);
             })
-            .AddHttpMessageHandler<LoggingHandler>();
+            .AddHttpMessageHandler<LoggingHandler>()
+            .AddHttpMessageHandler<TokenHandler>();
         return services;
     }
     

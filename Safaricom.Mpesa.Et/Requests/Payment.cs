@@ -10,20 +10,20 @@ public class Payment : MpesaRequest
     /// <summary>
     /// The unique request ID for tracking a transaction
     /// </summary>
-    public Guid? OriginatorConversationID { get; set; }
+    public required Guid OriginatorConversationID { get; set; }
 
     /// <summary>
     /// The username of the M-Pesa B2C account API operator.
     /// NOTE: the access channel for this operator must be API and the account must be in active status.
     /// </summary>
-    public string InitiatorName { get; set; }
+    public required string InitiatorName { get; set; }
 
     /// <summary>
     /// This is the value obtained after encrypting the API initiator password.
     /// MpesaLib Provides the <c>Credentials.EncryptPassword</c> under MpesaLib.Helpers namespace to help you 
     /// with the encryption. You need a public certificate from Safaricom for either sandbox or live APIs for this to work.
     /// </summary>
-    public string SecurityCredential { get; set; }
+    public required string SecurityCredential { get; set; }
 
     /// <summary>
     /// This is a unique command that specifies B2C transaction type.
@@ -33,53 +33,54 @@ public class Payment : MpesaRequest
     /// congratulatory message. Supports only M-Pesa registered customers.
     /// </summary>
     [JsonIgnore]
-    public PaymentType CommandID { get; set; }
+    public required PaymentType CommandID { get; set; }
 
     [JsonInclude]
     [JsonPropertyName(nameof(CommandID))]
-    private string _commandID => CommandID.ToString();
+    private string commandID => CommandID.ToString();
+
     /// <summary>
     /// The amount of money being sent to the customer.
     /// </summary>
-    [JsonIgnore]
-    public decimal Amount { get; set; }
+    //[JsonIgnore]
+    public required int Amount { get; set; }
 
-    [JsonInclude]
-    [JsonPropertyName(nameof(Amount))]
-    private string _amount => Amount.ToString("0.##");
+    //[JsonInclude]
+    //[JsonPropertyName(nameof(Amount))]
+    //private string amount => Amount.ToString("0.##");
 
     /// <summary>
     /// This is the B2C organization shortcode from which the money is to be sent.
     /// </summary>
-    public string PartyA { get; set; }
+    public required short PartyA { get; set; }
 
     /// <summary>
     /// This is the customer mobile number  to receive the amount.
     /// The number should have the country code (254) without the plus sign i.e 2547XXXXXXXX.
     /// </summary>
-    public string PartyB { get; set; }
+    public required string PartyB { get; set; }
 
     /// <summary>
     /// Any additional information to be associated with the transaction. (Upto 100 characters)
     /// </summary>
-    public string Remarks { get; set; }
+    public required string Remarks { get; set; }
 
     /// <summary>
     /// This is the URL to be specified in your request that will be used by API Proxy to send notification 
     /// incase the payment request is timed out while awaiting processing in the queue. 
     /// </summary>
-    public string QueueTimeOutURL { get; set; }
+    public required Uri QueueTimeOutURL { get; set; }
 
     /// <summary>
     /// This is the URL to be specified in your request that will be used by M-Pesa to send notification upon 
     /// processing of the payment request.
     /// </summary>
-    public string ResultURL { get; set; }
+    public required Uri ResultURL { get; set; }
 
     /// <summary>
     /// Any additional information to be associated with the transaction. (Upto 100 characters)
     /// </summary>
-    public string Occasion { get; set; }
+    public string Occasion { get; set; } = string.Empty;
 }
 
 public enum PaymentType
