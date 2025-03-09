@@ -15,7 +15,7 @@ public class AccountBalance
     /// <summary>
     /// The unique request ID for tracking a transaction.
     /// </summary>
-    public required Guid OriginatorConversationID { get; set; }
+    public required string OriginatorConversationID { get; set; }
     /// <summary>
     /// This is the credential/username used to authenticate the transaction request.
     /// </summary>
